@@ -95,16 +95,15 @@ public class DbConnection {
     }
 
     public int executeCount(String sql, String date) {
-        int num = 0;
+        int count = 0;
         try {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
-            resultSet.last();
-            num = resultSet.getRow();
+            count = resultSet.getInt("count");
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS + " >> " + sql);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
         }
-        return num;
+        return count;
     }
 }
