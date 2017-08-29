@@ -4,8 +4,8 @@ public class SystemInfo {
     public static final String DATABASE_ENVIRONMENT_PRODUCE = "数据库环境：生产";
     public static final String DATABASE_ENVIRONMENT_DEVELOP = "数据库环境：测试";
 
-    public static final String DATABASE_CONNECTION_ERROR = "数据连接发生错误";
-    public static final String DATABASE_CONNECTION_SUCCESS = "数据连接成功";
+    public static final String DATABASE_CONNECTION_ERROR = "数据库连接发生错误";
+    public static final String DATABASE_CONNECTION_SUCCESS = "数据库连接成功";
 
     public static final String DATABASE_COMMIT_ERROR = "数据提交失败";
     public static final String DATABASE_COMMIT_SUCCESS = "数据提交成功";
@@ -27,6 +27,14 @@ public class SystemInfo {
 
     public static final String DATABASE_SELECT_ERROR = "数据库查询失败";
     public static final String DATABASE_SELECT_SUCCESS = "数据库查询成功";
+
+    public static final String DATABASE_PROPERTY_NULL = "参数为空";
+
+    public static final String FILE_NOT_FOUND = "文件未找到";
+    public static final String FILE_PARSE_ERROR = "文件解析出现错误";
+    public static final String FILE_PARSE_SUCCESS = "文件解析成功";
+
+    public static final String ID_NOT_FOUND = "输入的ID不存在";
 
     public static final String UNKNOWN_ERROR = "发生未知错误";
 }

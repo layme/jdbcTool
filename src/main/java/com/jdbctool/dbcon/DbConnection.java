@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DbConnection {
@@ -19,17 +21,17 @@ public class DbConnection {
 
     private static final Logger log = LoggerFactory.getLogger(DbConnection.class);
 
-    public DbConnection() {
+    public void getConnection() {
         this.getConnection(false);
     }
 
-    public Connection getConnection(boolean autoCommit) {
+    public void getConnection(boolean autoCommit) {
         if(null == connection) {
             ResourceBundle resource = ResourceBundle.getBundle("config");
             String key = resource.getString("profile");
             driver = resource.getString("driver");
             if ("produce".equals(key)) {
-                log.info(SystemInfo.DATABASE_ENVIRONMENT_PRODUCE);
+                log.debug(SystemInfo.DATABASE_ENVIRONMENT_PRODUCE);
                 url = resource.getString("database.url.pro");
                 username = resource.getString("database.username.pro");
                 password = resource.getString("database.password.pro");
@@ -39,7 +41,6 @@ public class DbConnection {
                 username = resource.getString("database.username.dev");
                 password = resource.getString("database.password.dev");
             }
-            log.debug("url = " + url + ", username = " + username + ", password = " + password);
             try {
                 Class.forName(driver);
                 connection = DriverManager.getConnection(url, username, password);
@@ -53,7 +54,6 @@ public class DbConnection {
                 e.printStackTrace();
             }
         }
-        return connection;
     }
 
     public void commit() {
@@ -94,16 +94,109 @@ public class DbConnection {
         }
     }
 
-    public int executeCount(String sql, String date) {
+    /**
+     * 查询总数
+     * @param sql
+     * @param properties
+     * @return
+     */
+    public int queryCount(String sql, List<String> properties) throws SQLException {
         int count = 0;
         try {
             preparedStatement = connection.prepareStatement(sql);
+            if(null != properties) {
+                int i = 1;
+                for (String property : properties) {
+                    preparedStatement.setString(i++,property);
+                }
+            }
             resultSet = preparedStatement.executeQuery();
-            count = resultSet.getInt("count");
-            log.debug(SystemInfo.DATABASE_SELECT_SUCCESS + " >> " + sql);
+            if(resultSet.next()) {
+                count = resultSet.getInt("count");
+            }
+            log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
+            log.debug("sql>> " + sql);
+            log.debug("count = " + count);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
+            throw e;
         }
         return count;
     }
+
+    /**
+     * 查询单列
+     * @param sql
+     * @param properties
+     * @return
+     */
+    public List<String> QueryOneColumn(String sql, List<String> properties) throws SQLException {
+        List<String> list = new ArrayList<String>();
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            if(null != properties) {
+                int i = 1;
+                for (String property : properties) {
+                    preparedStatement.setString(i++,property);
+                }
+            }
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                do{
+                    list.add(resultSet.getString("shenqingh"));
+                } while(resultSet.next());
+            }
+            log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
+            log.debug("sql>> " + sql);
+        } catch (SQLException e) {
+            log.debug(SystemInfo.DATABASE_SELECT_ERROR);
+            throw e;
+        }
+        return list;
+    }
+
+    /**
+     * 查询全部
+     * @param sql
+     * @return
+     */
+    public ResultSet queryAll(String sql) throws SQLException {
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
+            log.debug("sql>> " + sql);
+        } catch (SQLException e) {
+            log.debug(SystemInfo.DATABASE_SELECT_ERROR);
+            throw e;
+        }
+        return resultSet;
+    }
+
+    /**
+     * 更新数据
+     * @param sql
+     * @param properties
+     * @return
+     */
+    public int executeUpdate(String sql, List<String> properties) throws SQLException {
+        int num = 0;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            if(null != properties) {
+                int i = 1;
+                for (String property : properties) {
+                    preparedStatement.setString(i++,property);
+                }
+            }
+            num = preparedStatement.executeUpdate();
+            log.debug(SystemInfo.DATABASE_UPDATE_SUCCESS);
+            log.debug("sql>> " + sql);
+        } catch (SQLException e) {
+            log.debug(SystemInfo.DATABASE_UPDATE_ERROR);
+            throw e;
+        }
+        return num;
+    }
+
 }
