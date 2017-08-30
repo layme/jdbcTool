@@ -14,12 +14,23 @@ public class DbConnection {
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
-    private String driver = null;
-    private String url = null;
-    private String username = null;
-    private String password = null;
+    private String driver;
+    private String url;
+    private String username;
+    private String password;
 
     private static final Logger log = LoggerFactory.getLogger(DbConnection.class);
+
+    private static DbConnection dbConnection = null;
+
+    private DbConnection() {}
+
+    public static DbConnection getInstance() {
+        if(null == dbConnection) {
+            dbConnection = new DbConnection();
+        }
+        return dbConnection;
+    }
 
     public void getConnection() {
         this.getConnection(false);
@@ -130,7 +141,7 @@ public class DbConnection {
      * @param properties
      * @return
      */
-    public List<String> QueryOneColumn(String sql, List<String> properties) throws SQLException {
+    public List<String> queryOneColumn(String sql, List<String> properties) throws SQLException {
         List<String> list = new ArrayList<String>();
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -174,12 +185,12 @@ public class DbConnection {
     }
 
     /**
-     * 更新数据
+     * 更新/删除数据
      * @param sql
      * @param properties
      * @return
      */
-    public int executeUpdate(String sql, List<String> properties) throws SQLException {
+    public int update(String sql, List<String> properties) throws SQLException {
         int num = 0;
         try {
             preparedStatement = connection.prepareStatement(sql);
