@@ -13,6 +13,7 @@ public class DbConnection {
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
+    private CallableStatement callableStatement = null;
 
     private String driver;
     private String url;
@@ -25,6 +26,10 @@ public class DbConnection {
 
     private DbConnection() {}
 
+    /**
+     * 获取单例实例
+     * @return
+     */
     public static DbConnection getInstance() {
         if(null == dbConnection) {
             dbConnection = new DbConnection();
@@ -32,10 +37,17 @@ public class DbConnection {
         return dbConnection;
     }
 
+    /**
+     * 获取连接 默认关闭自动提交
+     */
     public void getConnection() {
         this.getConnection(false);
     }
 
+    /**
+     * 获取连接并指定提交方式
+     * @param autoCommit
+     */
     public void getConnection(boolean autoCommit) {
         if(null == connection) {
             ResourceBundle resource = ResourceBundle.getBundle("config");
@@ -67,6 +79,9 @@ public class DbConnection {
         }
     }
 
+    /**
+     * 提交事务
+     */
     public void commit() {
         try {
             connection.commit();
@@ -77,6 +92,9 @@ public class DbConnection {
         }
     }
 
+    /**
+     * 回滚事务
+     */
     public void rollback() {
         try {
             connection.rollback();
@@ -87,6 +105,9 @@ public class DbConnection {
         }
     }
 
+    /**
+     * 关闭数据库连接
+     */
     public void close() {
         try {
             if(null != connection) {
@@ -110,10 +131,12 @@ public class DbConnection {
      * @param sql
      * @param properties
      * @return
+     * @throws SQLException
      */
     public int queryCount(String sql, List<String> properties) throws SQLException {
         int count = 0;
         try {
+            log.debug("sql>> " + sql);
             preparedStatement = connection.prepareStatement(sql);
             if(null != properties) {
                 int i = 1;
@@ -126,7 +149,6 @@ public class DbConnection {
                 count = resultSet.getInt(1);
             }
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
-            log.debug("sql>> " + sql);
             log.debug("count = " + count);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
@@ -140,10 +162,12 @@ public class DbConnection {
      * @param sql
      * @param properties
      * @return
+     * @throws SQLException
      */
     public List<String> queryOneColumn(String sql, List<String> properties) throws SQLException {
         List<String> list = new ArrayList<String>();
         try {
+            log.debug("sql>> " + sql);
             preparedStatement = connection.prepareStatement(sql);
             if(null != properties) {
                 int i = 1;
@@ -158,7 +182,6 @@ public class DbConnection {
                 } while(resultSet.next());
             }
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
-            log.debug("sql>> " + sql);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
             throw e;
@@ -170,13 +193,14 @@ public class DbConnection {
      * 查询全部
      * @param sql
      * @return
+     * @throws SQLException
      */
     public ResultSet queryAll(String sql) throws SQLException {
         try {
+            log.debug("sql>> " + sql);
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
-            log.debug("sql>> " + sql);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
             throw e;
@@ -189,10 +213,12 @@ public class DbConnection {
      * @param sql
      * @param properties
      * @return
+     * @throws SQLException
      */
     public int update(String sql, List<String> properties) throws SQLException {
         int num = 0;
         try {
+            log.debug("sql>> " + sql);
             preparedStatement = connection.prepareStatement(sql);
             if(null != properties) {
                 int i = 1;
@@ -202,7 +228,6 @@ public class DbConnection {
             }
             num = preparedStatement.executeUpdate();
             log.debug(SystemInfo.DATABASE_UPDATE_SUCCESS);
-            log.debug("sql>> " + sql);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_UPDATE_ERROR);
             throw e;
@@ -210,4 +235,31 @@ public class DbConnection {
         return num;
     }
 
+    /**
+     * 执行带参无返回值的存储过程
+     * @param procedure
+     * @param properties
+     * @return
+     * @throws SQLException
+     */
+    public boolean callProcedureWithoutResult(String procedure, List<String> properties) throws SQLException {
+        boolean result = false;
+        try {
+            log.debug("procedure>> " + procedure);
+            callableStatement = connection.prepareCall(procedure);
+            if(null != properties) {
+                int i = 1;
+                for (String property : properties) {
+                    callableStatement.setString(i++,property);
+                }
+            }
+            callableStatement.execute();
+            log.debug(SystemInfo.DATABASE_PROCEDURE_SUCCESS);
+            result = true;
+        } catch (SQLException e) {
+            log.debug(SystemInfo.DATABASE_PROCEDURE_ERROR);
+            throw e;
+        }
+        return result;
+    }
 }
