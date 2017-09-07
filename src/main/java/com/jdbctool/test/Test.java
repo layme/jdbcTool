@@ -18,23 +18,26 @@ public class Test {
     public static void main(String[] args) {
         XmlParse xmlParse = XmlParse.getInstance();
         xmlParse.loadXml();
-        String sql = xmlParse.getSql("allCount");
-        List<String> list = new ArrayList<String>();
-        list.add("20170825");
-        list.add("20170828");
-        DbConnection c = new DbConnection();
-        try {
-            c.getConnection();
-
-            int count = c.queryCount(sql, list);
-            int i = 1/0;
-            log.debug("count = " + count);
-            c.commit();
-        } catch (Exception e) {
-            c.rollback();
-            e.printStackTrace();
-        } finally {
-            c.close();
+//        String sql = xmlParse.getSqlById("allCount");
+        List<String> sqls = xmlParse.getSqlByGroupId("backup");
+        for (String sql : sqls) {
+            log.debug(sql + "\n");
         }
+        log.debug("" + sqls.size());
+//        List<String> list = new ArrayList<String>();
+//        list.add("20170825");
+//        list.add("20170828");
+//        DbConnection c = DbConnection.getInstance();
+//        try {
+//            c.getConnection();
+//            int count = c.queryCount(sql, list);
+//            log.debug("count = " + count);
+//            c.commit();
+//        } catch (Exception e) {
+//            c.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            c.close();
+//        }
     }
 }
