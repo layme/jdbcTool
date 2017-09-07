@@ -1,6 +1,6 @@
-package com.jdbctool.dbcon;
+package singledog.jdbctool.dbcon;
 
-import com.jdbctool.constant.SystemInfo;
+import singledog.jdbctool.constant.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,16 +39,18 @@ public class DbConnection {
 
     /**
      * 获取连接 默认关闭自动提交
+     * @throws Exception
      */
-    public void getConnection() {
+    public void getConnection() throws Exception {
         this.getConnection(false);
     }
 
     /**
      * 获取连接并指定提交方式
      * @param autoCommit
+     * @throws Exception
      */
-    public void getConnection(boolean autoCommit) {
+    public void getConnection(boolean autoCommit) throws Exception {
         if(null == connection) {
             ResourceBundle resource = ResourceBundle.getBundle("config");
             String key = resource.getString("profile");
@@ -71,44 +73,47 @@ public class DbConnection {
                 log.debug(SystemInfo.DATABASE_CONNECTION_SUCCESS);
             } catch (SQLException e) {
                 log.debug(SystemInfo.DATABASE_CONNECTION_ERROR);
-                e.printStackTrace();
+                throw e;
             } catch (Exception e) {
                 log.debug(SystemInfo.UNKNOWN_ERROR);
-                e.printStackTrace();
+                throw e;
             }
         }
     }
 
     /**
      * 提交事务
+     * @throws SQLException
      */
-    public void commit() {
+    public void commit() throws SQLException {
         try {
             connection.commit();
             log.debug(SystemInfo.DATABASE_COMMIT_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_COMMIT_ERROR);
-            e.printStackTrace();
+            throw e;
         }
     }
 
     /**
      * 回滚事务
+     * @throws SQLException
      */
-    public void rollback() {
+    public void rollback() throws SQLException {
         try {
             connection.rollback();
             log.debug(SystemInfo.DATABASE_ROLLBACK_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_ROLLBACK_ERROR);
-            e.printStackTrace();
+            throw e;
         }
     }
 
     /**
      * 关闭数据库连接
+     * @throws SQLException
      */
-    public void close() {
+    public void close() throws SQLException {
         try {
             if(null != connection) {
                 connection.close();
@@ -122,7 +127,7 @@ public class DbConnection {
             log.debug(SystemInfo.DATABASE_CLOSE_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_CLOSE_ERROR);
-            e.printStackTrace();
+            throw e;
         }
     }
 
