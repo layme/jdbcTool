@@ -22,6 +22,10 @@ public class XmlParse {
 
     private XmlParse() {}
 
+    /**
+     * 获取单例实例
+     * @return
+     */
     public static XmlParse getInstance() {
         if (null == xmlParse) {
             xmlParse = new XmlParse();
@@ -75,5 +79,20 @@ public class XmlParse {
             sqls.add(element.getText());
         }
         return sqls;
+    }
+
+    /**
+     * 根据ID查找PROCEDURE
+     * @param id
+     * @return
+     */
+    public String getProcedureById(String id) {
+        String procedure;
+        List<org.dom4j.Element> list = document.selectNodes("/sqls/procedures/procedure[@id='" + id + "']");
+        if (null == list || list.size() < 1) {
+            throw new IllegalArgumentException(SystemInfo.ID_NOT_FOUND);
+        }
+        procedure = list.get(0).getText();
+        return procedure;
     }
 }
