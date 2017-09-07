@@ -28,6 +28,9 @@ public class SystemInfo {
     public static final String DATABASE_SELECT_ERROR = "数据库查询失败";
     public static final String DATABASE_SELECT_SUCCESS = "数据库查询成功";
 
+    public static final String DATABASE_PROCEDURE_ERROR = "存储过程执行失败";
+    public static final String DATABASE_PROCEDURE_SUCCESS = "存储过程执行成功";
+
     public static final String DATABASE_PROPERTY_NULL = "参数为空";
 
     public static final String FILE_NOT_FOUND = "文件未找到";
