@@ -123,7 +123,7 @@ public class DbConnection {
             }
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                count = resultSet.getInt("count");
+                count = resultSet.getInt(1);
             }
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
             log.debug("sql>> " + sql);
@@ -154,7 +154,7 @@ public class DbConnection {
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
                 do{
-                    list.add(resultSet.getString("shenqingh"));
+                    list.add(resultSet.getString(1));
                 } while(resultSet.next());
             }
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
