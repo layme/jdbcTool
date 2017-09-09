@@ -38,7 +38,7 @@ public class DbConnection {
      * @throws Exception
      */
     public Executor buildExecutor(boolean autoCommit) throws Exception {
-        log.debug(SystemInfo.DATABASE_ENVIRONMENT + dataSource);
+        log.debug(SystemInfo.DATABASE_ENVIRONMENT + dataSource.getProfile());
         try {
             Class.forName(dataSource.getDriver());
             Connection connection = DriverManager.getConnection(dataSource.getUrl(),
