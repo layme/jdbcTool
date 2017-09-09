@@ -67,7 +67,7 @@ public class XmlReader {
     }
 
     /**
-     * 吧xml文件的数据封装成对象
+     * 把xml文件的数据封装成对象
      * @param list
      * @param cls
      * @return map
@@ -76,63 +76,18 @@ public class XmlReader {
     public Map<String, Object> getNodeData(List<Element> list, Class cls) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         Field[] fs = cls.getDeclaredFields();
+        for (Field f : fs) {
+            log.debug("f = " + f.getName());
+        }
         for (Element e : list) {
             Object o = cls.newInstance();
             for (int i = 0; i < fs.length; i++) {
                 Field field = cls.getDeclaredField(fs[i].getName());
+                field.setAccessible(true);
                 field.set(o, e.element(fs[i].getName()).getText());
             }
             map.put(e.attributeValue("id"), o);
         }
         return map;
-    }
-
-    /**
-     * 根据ID查找SQL
-     * @param id
-     * @return
-     * @throws IllegalArgumentException
-     */
-    public String getSqlById(String id) throws IllegalArgumentException {
-        String sql;
-        List<Element> list = document.selectNodes("/sqls/sql[@id='" + id + "']");
-        if (null == list || list.size() < 1) {
-            throw new IllegalArgumentException(SystemInfo.ID_NOT_FOUND);
-        }
-        sql = list.get(0).getText();
-        return sql;
-    }
-
-    /**
-     * 根据GROUP ID查找SQlS
-     * @param id
-     * @return
-     */
-    public List<String> getSqlByGroupId(String id) {
-        List<Element> list = document.selectNodes("/sqls/groups/group[@id='" + id + "']");
-        if (null == list || list.size() < 1) {
-            throw new IllegalArgumentException(SystemInfo.ID_NOT_FOUND);
-        }
-        list = list.get(0).elements();
-        List<String> sqls = new ArrayList<String>();
-        for (Element element : list) {
-            sqls.add(element.getText());
-        }
-        return sqls;
-    }
-
-    /**
-     * 根据ID查找PROCEDURE
-     * @param id
-     * @return
-     */
-    public String getProcedureById(String id) {
-        String procedure;
-        List<Element> list = document.selectNodes("/sqls/procedures/procedure[@id='" + id + "']");
-        if (null == list || list.size() < 1) {
-            throw new IllegalArgumentException(SystemInfo.ID_NOT_FOUND);
-        }
-        procedure = list.get(0).getText();
-        return procedure;
     }
 }
