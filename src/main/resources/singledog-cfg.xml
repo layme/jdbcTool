@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<singledog>
+    <datasources>
+        <datasource id="develop">
+            <driver>oracle.jdbc.driver.OracleDriver</driver>
+            <url>jdbc:oracle:thin:@10.50.160.2:1522:dzspscp</url>
+            <username>data_user</username>
+            <password>gwssi123</password>
+        </datasource>
+        <datasource id="produce">
+            <driver>oracle.jdbc.driver.OracleDriver</driver>
+            <url>jdbc:oracle:thin:@10.50.160.43:1521:dzspscp</url>
+            <username>ees_user</username>
+            <password>17jby9cu</password>
+        </datasource>
+    </datasources>
+    <resources>
+        <resource>sqlPool.xml</resource>
+    </resources>
+</singledog>
