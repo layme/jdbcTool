@@ -1,8 +1,7 @@
-package com.jdbctool.constant;
+package singledog.jdbctool.constant;
 
 public class SystemInfo {
-    public static final String DATABASE_ENVIRONMENT_PRODUCE = "数据库环境：生产";
-    public static final String DATABASE_ENVIRONMENT_DEVELOP = "数据库环境：测试";
+    public static final String DATABASE_ENVIRONMENT = "数据库环境：";
 
     public static final String DATABASE_CONNECTION_ERROR = "数据库连接发生错误";
     public static final String DATABASE_CONNECTION_SUCCESS = "数据库连接成功";
@@ -36,6 +35,14 @@ public class SystemInfo {
     public static final String FILE_NOT_FOUND = "文件未找到";
     public static final String FILE_PARSE_ERROR = "文件解析出现错误";
     public static final String FILE_PARSE_SUCCESS = "文件解析成功";
+
+    public static final String GET_DATASOURCE_SUCCESS = "获取数据库参数成功";
+    public static final String GET_DATASOURCE_ERROR = "获取数据库参数失败";
+    public static final String GET_RESOURCE_SUCCESS = "获取SQL文件成功";
+    public static final String GET_RESOURCE_ERROR = "获取SQL文件失败";
+
+    public static final String GET_NODE_SUCCESS = "读取节点成功";
+    public static final String GET_NODE_ERROR = "读取节点失败";
 
     public static final String ID_NOT_FOUND = "输入的ID不存在";
 
