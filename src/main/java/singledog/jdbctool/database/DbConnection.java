@@ -13,13 +13,15 @@ public class DbConnection {
     private static final Logger log = LoggerFactory.getLogger(DbConnection.class);
 
     private DataSource dataSource;  // 数据库参数
+    private String profile;
 
     /**
      * 构造函数
      * @param dataSource
      */
-    protected DbConnection(DataSource dataSource) {
+    protected DbConnection(DataSource dataSource, String profile) {
         this.dataSource = dataSource;
+        this.profile = profile;
     }
 
     /**
@@ -38,7 +40,7 @@ public class DbConnection {
      * @throws Exception
      */
     public Executor buildExecutor(boolean autoCommit) throws Exception {
-        log.debug(SystemInfo.DATABASE_ENVIRONMENT + dataSource.getProfile());
+        log.debug(SystemInfo.DATABASE_ENVIRONMENT + profile);
         try {
             Class.forName(dataSource.getDriver());
             Connection connection = DriverManager.getConnection(dataSource.getUrl(),
