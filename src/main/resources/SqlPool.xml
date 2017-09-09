@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<sqls>
+<sqlcontent>
     <procedures>
         <procedure id="beifen">
             {data_user.PRO_GB$GBJ_BF(?)}
@@ -8,7 +8,7 @@
             {data_user.PRO_GB$GBJ_CJ(?)}
         </procedure>
     </procedures>
-
+    <sqls>
     <sql id="allCount">
         select count(1) as count
         from fa_fmgk_gkqrb
@@ -75,4 +75,5 @@
         and b.state = '1'
         and b.main_id in (?)
     </sql>
-</sqls>
+    </sqls>
+</sqlcontent>

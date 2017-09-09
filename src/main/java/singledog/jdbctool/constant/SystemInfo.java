@@ -44,6 +44,8 @@ public class SystemInfo {
     public static final String GET_NODE_SUCCESS = "读取节点成功";
     public static final String GET_NODE_ERROR = "读取节点失败";
 
+    public static final String GET_DATA_ERROR = "读取配置数据失败";
+
     public static final String ID_NOT_FOUND = "输入的ID不存在";
 
     public static final String UNKNOWN_ERROR = "发生未知错误";

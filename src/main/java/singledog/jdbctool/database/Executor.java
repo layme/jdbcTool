@@ -16,8 +16,6 @@ import java.util.Map;
 public class Executor {
     private static final Logger log = LoggerFactory.getLogger(Executor.class);
 
-    private Map<String, String> sqlContentMap = Configuration.getConfiguration().getSqlContentMap();
-
     private Connection connection = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
@@ -32,8 +30,8 @@ public class Executor {
      * @param id
      * @return
      */
-    public String getSqlContent(String id) {
-        return sqlContentMap.get(id);
+    public String getSqlContent(String id) throws Exception {
+        return Configuration.getConfiguration().getSqlContentMap().get(id);
     }
 
     /**
@@ -129,7 +127,7 @@ public class Executor {
      * @return
      * @throws SQLException
      */
-    public List<String> queryOneColumn(String id, List<String> properties) throws SQLException {
+    public List<String> queryOneColumn(String id, List<String> properties) throws Exception {
         List<String> list = new ArrayList<String>();
         try {
             log.debug("sql>> " + getSqlContent(id));

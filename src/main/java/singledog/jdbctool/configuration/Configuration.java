@@ -38,8 +38,8 @@ public class Configuration {
             configuration = new Configuration();
             xmlReader = XmlReader.getInstance();
             xmlReader.loadXml(filePath);
-            //dataSourceMap = getDataMap("datasources", DataSource.class);
-            sqlContentMap = getDataMap("sqls", String.class);
+            dataSourceMap = getDataMap("datasources", DataSource.class);
+            //sqlContentMap = getDataMap("sqls", String.class);
             //sqlContentMap.putAll(getDataMap("procedures", String.class));
         }
         return configuration;
