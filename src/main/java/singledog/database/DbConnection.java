@@ -1,13 +1,11 @@
-package singledog.jdbctool.database;
+package singledog.database;
 
-import singledog.jdbctool.configuration.Configuration;
-import singledog.jdbctool.configuration.DataSource;
-import singledog.jdbctool.constant.SystemInfo;
+import singledog.configuration.DataSource;
+import singledog.constant.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.ResourceBundle;
 
 public class DbConnection {
     private static final Logger log = LoggerFactory.getLogger(DbConnection.class);

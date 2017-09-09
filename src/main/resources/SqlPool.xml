@@ -9,71 +9,71 @@
         </procedure>
     </procedures>
     <sqls>
-    <sql id="allCount">
-        select count(1) as count
-        from fa_fmgk_gkqrb
-        where fa_fmgk_gkqrb.gongkair = ?
-    </sql>
-    <sql id="successCount">
-        select count(1) as count
-        from fa_fmgk_gkqrb
-        where fa_fmgk_gkqrb.gongkair = ?
-        and fa_fmgk_gkqrb.shenqingh in
-        (select gg_wj_tzsmsb.yewuztbh
-        from gg_wj_tzsmsb
-        where gg_wj_tzsmsb.tongzhislx in ('210305', '210308')
-        and gg_wj_tzsmsb.tongzhiszt = '05'
-        and gg_wj_tzsmsb.tongzhisscrq in (?))
-    </sql>
-    <sql id="lose">
-        select zhu.shenqingh,
-        zhu.faminggbr,
-        cxdpz.chengxudmc,
-        sczt.zhuangtaimc
-        from gg_zlx_zhu zhu
-        left join gg_sczt_scztpz sczt
-        on sczt.zhuangtaibh = zhu.anjianywzt
-        left join gg_sczt_sccxdpz cxdpz
-        on cxdpz.chengxudbh = sczt.chengxudbh
-        where substr(zhu.anjianywzt, '0', '5') = 'S1101'
-        and zhu.shenqingh in
-        (select fa_fmgk_gkqrb.shenqingh
-        from fa_fmgk_gkqrb
-        where fa_fmgk_gkqrb.gongkair = ?)
-    </sql>
-    <sql id="failedCount">
-        select fa_fmgk_gkqrb.shenqingh
-        from fa_fmgk_gkqrb
-        where fa_fmgk_gkqrb.gongkair = ?
-        and fa_fmgk_gkqrb.shenqingh not in
-        (select gg_wj_tzsmsb.yewuztbh
-        from gg_wj_tzsmsb
-        where gg_wj_tzsmsb.tongzhislx in ('210305','210308')
-        and gg_wj_tzsmsb.tongzhiszt = '05'
-        and gg_wj_tzsmsb.tongzhisscrq in (?))
-        and fa_fmgk_gkqrb.shenqingh not in
-        (select zhu.shenqingh
-        from gg_zlx_zhu zhu
-        where substr(zhu.anjianywzt, '0', '5') = 'S1101'
-        and zhu.shenqingh in
-        (select fa_fmgk_gkqrb.shenqingh
-        from fa_fmgk_gkqrb
-        where fa_fmgk_gkqrb.gongkair = ?))
-    </sql>
-    <sql id="isExists">
-        select t.an from t_pub_list@to_chubanshe t where t.an in (?)
-    </sql>
-    <sql id="wfTo1906">
-        update wf_currentstep c
-        set c.step_id = '1906', c.status = '1906S01'
-        where c.id in (select a.id
-        from wf_currentstep a
-        left join wf_wfentry b
-        on b.id = a.entry_id
-        where 1 = 1
-        and b.name = '19'
-        and b.state = '1'
-        and b.main_id in (?)
-    </sql>
+        <sql id="allCount">
+            select count(1) as count
+            from fa_fmgk_gkqrb
+            where fa_fmgk_gkqrb.gongkair = ?
+        </sql>
+        <sql id="successCount">
+            select count(1) as count
+            from fa_fmgk_gkqrb
+            where fa_fmgk_gkqrb.gongkair = ?
+            and fa_fmgk_gkqrb.shenqingh in
+            (select gg_wj_tzsmsb.yewuztbh
+            from gg_wj_tzsmsb
+            where gg_wj_tzsmsb.tongzhislx in ('210305', '210308')
+            and gg_wj_tzsmsb.tongzhiszt = '05'
+            and gg_wj_tzsmsb.tongzhisscrq in (?))
+        </sql>
+        <sql id="lose">
+            select zhu.shenqingh,
+            zhu.faminggbr,
+            cxdpz.chengxudmc,
+            sczt.zhuangtaimc
+            from gg_zlx_zhu zhu
+            left join gg_sczt_scztpz sczt
+            on sczt.zhuangtaibh = zhu.anjianywzt
+            left join gg_sczt_sccxdpz cxdpz
+            on cxdpz.chengxudbh = sczt.chengxudbh
+            where substr(zhu.anjianywzt, '0', '5') = 'S1101'
+            and zhu.shenqingh in
+            (select fa_fmgk_gkqrb.shenqingh
+            from fa_fmgk_gkqrb
+            where fa_fmgk_gkqrb.gongkair = ?)
+        </sql>
+        <sql id="failedCount">
+            select fa_fmgk_gkqrb.shenqingh
+            from fa_fmgk_gkqrb
+            where fa_fmgk_gkqrb.gongkair = ?
+            and fa_fmgk_gkqrb.shenqingh not in
+            (select gg_wj_tzsmsb.yewuztbh
+            from gg_wj_tzsmsb
+            where gg_wj_tzsmsb.tongzhislx in ('210305','210308')
+            and gg_wj_tzsmsb.tongzhiszt = '05'
+            and gg_wj_tzsmsb.tongzhisscrq in (?))
+            and fa_fmgk_gkqrb.shenqingh not in
+            (select zhu.shenqingh
+            from gg_zlx_zhu zhu
+            where substr(zhu.anjianywzt, '0', '5') = 'S1101'
+            and zhu.shenqingh in
+            (select fa_fmgk_gkqrb.shenqingh
+            from fa_fmgk_gkqrb
+            where fa_fmgk_gkqrb.gongkair = ?))
+        </sql>
+        <sql id="isExists">
+            select t.an from t_pub_list@to_chubanshe t where t.an in (?)
+        </sql>
+        <sql id="wfTo1906">
+            update wf_currentstep c
+            set c.step_id = '1906', c.status = '1906S01'
+            where c.id in (select a.id
+            from wf_currentstep a
+            left join wf_wfentry b
+            on b.id = a.entry_id
+            where 1 = 1
+            and b.name = '19'
+            and b.state = '1'
+            and b.main_id in (?)
+        </sql>
     </sqls>
 </sqlcontent>

@@ -1,15 +1,8 @@
-package singledog.jdbctool.database;
+package singledog.database;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import singledog.jdbctool.configuration.Configuration;
-import singledog.jdbctool.configuration.DataSource;
-import singledog.jdbctool.constant.SystemInfo;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
+import singledog.configuration.Configuration;
 
 /**
  * Created by admin on 2017/9/8.

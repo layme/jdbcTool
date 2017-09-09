@@ -1,4 +1,4 @@
-package singledog.jdbctool.configuration;
+package singledog.configuration;
 
 /**
  * Created by admin on 2017/9/8.
@@ -48,5 +48,10 @@ public class DataSource {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + driver + ", " + url + ", " + username + ", " + password + "]";
     }
 }

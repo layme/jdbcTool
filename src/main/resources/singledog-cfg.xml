@@ -13,8 +13,14 @@
             <username>ees_user</username>
             <password>17jby9cu</password>
         </datasource>
+        <datasource id="mac">
+            <driver>com.mysql.jdbc.Driver</driver>
+            <url>jdbc:mysql://127.0.0.1:3306/sb?characterEncoding=utf8;useSSL=false</url>
+            <username>root</username>
+            <password>0000</password>
+        </datasource>
     </datasources>
     <resources>
-        <resource>sqlPool.xml</resource>
+        <resource>target/classes/SqlPool.xml</resource>
     </resources>
 </singledog>

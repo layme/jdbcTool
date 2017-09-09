@@ -1,13 +1,11 @@
-package singledog.jdbctool.io;
+package singledog.io;
 
-import singledog.jdbctool.configuration.DataSource;
-import singledog.jdbctool.constant.SystemInfo;
+import singledog.constant.SystemInfo;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.annotation.ExceptionProxy;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -42,9 +40,9 @@ public class XmlReader {
         try {
             SAXReader reader = new SAXReader();
             document = reader.read(new File(filePath));
-            log.debug(SystemInfo.FILE_PARSE_SUCCESS);
+            log.debug(SystemInfo.FILE_PARSE_SUCCESS + filePath);
         } catch(Exception e) {
-            log.debug(SystemInfo.FILE_PARSE_ERROR);
+            log.debug(SystemInfo.FILE_PARSE_ERROR + filePath);
             e.printStackTrace();
         }
     }
@@ -55,15 +53,16 @@ public class XmlReader {
      * @return list
      */
     public List<Element> getNodes(String nodeName) {
+        List<Element> list = null;
         try {
             Element rootElement = document.getRootElement();
-            List<Element> list = rootElement.element(nodeName).elements();
-            log.debug(SystemInfo.GET_NODE_SUCCESS);
-            return list;
+            list = rootElement.element(nodeName).elements();
+            log.debug(SystemInfo.GET_NODE_SUCCESS + nodeName);
         } catch (Exception e) {
-            log.debug(SystemInfo.GET_NODE_ERROR);
-            throw e;
+            log.debug(SystemInfo.GET_NODE_ERROR + nodeName);
+            e.printStackTrace();
         }
+        return list;
     }
 
     /**
@@ -73,12 +72,9 @@ public class XmlReader {
      * @return map
      * @throws Exception
      */
-    public Map<String, Object> getNodeData(List<Element> list, Class cls) throws Exception {
+    public Map<String, Object> getNodeTextToObj(List<Element> list, Class cls) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         Field[] fs = cls.getDeclaredFields();
-        for (Field f : fs) {
-            log.debug("f = " + f.getName());
-        }
         for (Element e : list) {
             Object o = cls.newInstance();
             for (int i = 0; i < fs.length; i++) {
@@ -87,6 +83,20 @@ public class XmlReader {
                 field.set(o, e.element(fs[i].getName()).getText());
             }
             map.put(e.attributeValue("id"), o);
+        }
+        return map;
+    }
+
+    /**
+     *
+     * @param list
+     * @return map
+     * @throws Exception
+     */
+    public Map<String, String> getNodeTextToString(List<Element> list) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        for (Element e : list) {
+            map.put(e.attributeValue("id"), e.getText());
         }
         return map;
     }

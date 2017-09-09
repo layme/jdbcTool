@@ -1,14 +1,13 @@
-package singledog.jdbctool.database;
+package singledog.database;
 
-import singledog.jdbctool.configuration.Configuration;
-import singledog.jdbctool.constant.SystemInfo;
+import singledog.configuration.Configuration;
+import singledog.constant.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by admin on 2017/9/8.
@@ -31,7 +30,11 @@ public class Executor {
      * @return
      */
     public String getSqlContent(String id) throws Exception {
-        return Configuration.getConfiguration().getSqlContentMap().get(id);
+        String sql = Configuration.getConfiguration().getSqlContentMap().get(id);
+        if (null == sql) {
+            throw new Exception(SystemInfo.ID_NOT_FOUND);
+        }
+        return sql;
     }
 
     /**
@@ -84,7 +87,8 @@ public class Executor {
         }
     }
 
-    public void setProperties(PreparedStatement preparedStatement, List<String> properties) throws SQLException {
+    public void setProperties(PreparedStatement preparedStatement,
+                              List<String> properties) throws SQLException {
         if(null != properties) {
             int i = 1;
             for (String property : properties) {
@@ -101,11 +105,11 @@ public class Executor {
      * @return
      * @throws SQLException
      */
-    public int queryCount(String sql, List<String> properties) throws SQLException {
+    public int queryCount(String id, List<String> properties) throws Exception {
         int count = 0;
         try {
-            log.debug("sql>> " + sql);
-            preparedStatement = connection.prepareStatement(sql);
+            log.debug("sql>> " + getSqlContent(id));
+            preparedStatement = connection.prepareStatement(getSqlContent(id));
             setProperties(preparedStatement, properties);
             resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
@@ -153,10 +157,10 @@ public class Executor {
      * @return
      * @throws SQLException
      */
-    public ResultSet queryAll(String sql) throws SQLException {
+    public ResultSet queryAll(String id) throws Exception {
         try {
-            log.debug("sql>> " + sql);
-            preparedStatement = connection.prepareStatement(sql);
+            log.debug("sql>> " + getSqlContent(id));
+            preparedStatement = connection.prepareStatement(getSqlContent(id));
             resultSet = preparedStatement.executeQuery();
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
         } catch (SQLException e) {
@@ -173,11 +177,11 @@ public class Executor {
      * @return
      * @throws SQLException
      */
-    public int update(String sql, List<String> properties) throws SQLException {
+    public int update(String id, List<String> properties) throws Exception {
         int num = 0;
         try {
-            log.debug("sql>> " + sql);
-            preparedStatement = connection.prepareStatement(sql);
+            log.debug("sql>> " + getSqlContent(id));
+            preparedStatement = connection.prepareStatement(getSqlContent(id));
             setProperties(preparedStatement, properties);
             num = preparedStatement.executeUpdate();
             log.debug(SystemInfo.DATABASE_UPDATE_SUCCESS);
@@ -195,11 +199,11 @@ public class Executor {
      * @return
      * @throws SQLException
      */
-    public boolean callProcedureWithoutResult(String procedure, List<String> properties) throws SQLException {
+    public boolean callProcedureWithoutResult(String id, List<String> properties) throws Exception {
         boolean result = false;
         try {
-            log.debug("procedure>> " + procedure);
-            callableStatement = connection.prepareCall(procedure);
+            log.debug("procedure>> " + getSqlContent(id));
+            callableStatement = connection.prepareCall(getSqlContent(id));
             setProperties(callableStatement, properties);
             callableStatement.execute();
             log.debug(SystemInfo.DATABASE_PROCEDURE_SUCCESS);
