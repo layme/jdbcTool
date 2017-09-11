@@ -9,6 +9,12 @@
         </procedure>
     </procedures>
     <sqls>
+        <sql id="sb1">
+            select count(1) as count from man
+        </sql>
+        <sql id="update">
+            update man set name = ?, nation = ?, address = ? where id = ?
+        </sql>
         <sql id="allCount">
             select count(1) as count
             from fa_fmgk_gkqrb

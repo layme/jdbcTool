@@ -38,7 +38,7 @@ public class Configuration {
             configuration = new Configuration();
             xmlReader = XmlReader.getInstance();
             xmlReader.loadXml(filePath);
-            //dataSourceMap = getDataMap("datasources", DataSource.class);
+            dataSourceMap = getDataMap("datasources", DataSource.class);
             sqlContentMap = getResources();
         }
         return configuration;

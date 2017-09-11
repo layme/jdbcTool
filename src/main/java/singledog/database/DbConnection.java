@@ -42,7 +42,7 @@ public class DbConnection {
         try {
             Class.forName(dataSource.getDriver());
             Connection connection = DriverManager.getConnection(dataSource.getUrl(),
-                    dataSource.getUrl(),
+                    dataSource.getUsername(),
                     dataSource.getPassword());
             connection.setAutoCommit(autoCommit);
             log.debug(SystemInfo.DATABASE_CONNECTION_SUCCESS);
@@ -58,5 +58,9 @@ public class DbConnection {
 
     public DataSource getDataSource() {
         return dataSource;
+    }
+
+    public String getProfile() {
+        return profile;
     }
 }

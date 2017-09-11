@@ -6,6 +6,9 @@ import singledog.database.DbConnection;
 import singledog.database.DbConnectionFactory;
 import singledog.database.Executor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by admin on 2017/9/9.
  */
@@ -13,15 +16,22 @@ public class AppTest {
     private static final Logger log = LoggerFactory.getLogger(AppTest.class);
 
     public static void main(String[] args) {
+        Executor executor = null;
         try {
             Configuration configuration = Configuration.getConfiguration("target/classes/singledog-cfg.xml");
-//            DbConnection dbConnection = DbConnectionFactory.build("mac");
-//            Executor executor = dbConnection.buildExecutor();
-//            executor.queryAll("queryCount");
-            System.out.println(configuration.getSqlContentMap().get("beife"));
+            DbConnection dbConnection = DbConnectionFactory.build("mac");
+            executor = dbConnection.buildExecutor();
+            List<String> properties = new ArrayList<String>();
+            properties.add("张星辰");
+            properties.add("02");
+            properties.add("北京");
+            properties.add("11");
+            log.debug("update Result = " + executor.update("update",properties));
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            executor.close();
         }
     }
 }

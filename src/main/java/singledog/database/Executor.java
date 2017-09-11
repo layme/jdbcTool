@@ -29,7 +29,7 @@ public class Executor {
      * @param id
      * @return
      */
-    public String getSqlContent(String id) throws Exception {
+    private String getSqlContent(String id) throws Exception {
         String sql = Configuration.getConfiguration().getSqlContentMap().get(id);
         if (null == sql) {
             throw new Exception(SystemInfo.ID_NOT_FOUND);
@@ -41,13 +41,13 @@ public class Executor {
      * 提交事务
      * @throws SQLException
      */
-    public void commit() throws SQLException {
+    public void commit() {
         try {
             connection.commit();
             log.debug(SystemInfo.DATABASE_COMMIT_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_COMMIT_ERROR);
-            throw e;
+            e.printStackTrace();
         }
     }
 
@@ -55,13 +55,13 @@ public class Executor {
      * 回滚事务
      * @throws SQLException
      */
-    public void rollback() throws SQLException {
+    public void rollback() {
         try {
             connection.rollback();
             log.debug(SystemInfo.DATABASE_ROLLBACK_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_ROLLBACK_ERROR);
-            throw e;
+            e.printStackTrace();
         }
     }
 
@@ -69,7 +69,7 @@ public class Executor {
      * 关闭数据库连接
      * @throws SQLException
      */
-    public void close() throws SQLException {
+    public void close() {
         try {
             if(null != connection) {
                 connection.close();
@@ -83,11 +83,11 @@ public class Executor {
             log.debug(SystemInfo.DATABASE_CLOSE_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_CLOSE_ERROR);
-            throw e;
+            e.printStackTrace();
         }
     }
 
-    public void setProperties(PreparedStatement preparedStatement,
+    private void setProperties(PreparedStatement preparedStatement,
                               List<String> properties) throws SQLException {
         if(null != properties) {
             int i = 1;
@@ -100,7 +100,7 @@ public class Executor {
 
     /**
      * 查询总数
-     * @param sql
+     * @param id
      * @param properties
      * @return
      * @throws SQLException
@@ -119,7 +119,7 @@ public class Executor {
             log.debug("count = " + count);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
-            throw e;
+            e.printStackTrace();
         }
         return count;
     }
@@ -146,14 +146,14 @@ public class Executor {
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
-            throw e;
+            e.printStackTrace();
         }
         return list;
     }
 
     /**
      * 查询全部
-     * @param sql
+     * @param id
      * @return
      * @throws SQLException
      */
@@ -165,14 +165,14 @@ public class Executor {
             log.debug(SystemInfo.DATABASE_SELECT_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_SELECT_ERROR);
-            throw e;
+            e.printStackTrace();
         }
         return resultSet;
     }
 
     /**
      * 更新/删除数据
-     * @param sql
+     * @param id
      * @param properties
      * @return
      * @throws SQLException
@@ -187,14 +187,14 @@ public class Executor {
             log.debug(SystemInfo.DATABASE_UPDATE_SUCCESS);
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_UPDATE_ERROR);
-            throw e;
+            e.printStackTrace();
         }
         return num;
     }
 
     /**
      * 执行带参无返回值的存储过程
-     * @param procedure
+     * @param id
      * @param properties
      * @return
      * @throws SQLException
@@ -210,7 +210,7 @@ public class Executor {
             result = true;
         } catch (SQLException e) {
             log.debug(SystemInfo.DATABASE_PROCEDURE_ERROR);
-            throw e;
+            e.printStackTrace();
         }
         return result;
     }
